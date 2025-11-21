@@ -12,5 +12,5 @@ class Userr(AbstractUser):
     phone = models.CharField(max_length=15, blank=True, null=True)
     
 
-    # def __str__(self):
-    #     return self.username +" - "+ self.role
+    def __str__(self):
+        return self.username +" - "+ self.role

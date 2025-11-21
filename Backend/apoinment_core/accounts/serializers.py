@@ -4,7 +4,7 @@ from accounts.models import Userr
 class RegisterPatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Userr
-        fields = ['username','email','password','phone']
+        fields = ['role','username','email','password','phone']
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
@@ -14,7 +14,7 @@ class RegisterPatientSerializer(serializers.ModelSerializer):
 class RegisterDoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Userr
-        fields = ['username','email','password','specialization']
+        fields = ['role','username','email','password','specialization']
         extra_kwargs = {"password": {"write_only": True}}   
 
     def create(self, validated_data):

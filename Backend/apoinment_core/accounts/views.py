@@ -12,6 +12,7 @@ class RegisterDoctor(APIView):
     def post(self, request):
         data = request.data.copy()
         data['role'] = 'doctor'
+        print("dara",data)
         serializer = RegisterDoctorSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
