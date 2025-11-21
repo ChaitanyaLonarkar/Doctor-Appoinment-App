@@ -1,0 +1,7 @@
+backend/
+│── core/
+│── accounts/       (Doctor + Patient Auth)
+│── appointments/   (Slots + Booking + Status)
+│── adminpanel/     (Admin overview API)
+│── chatbot/        (RAG, Vector DB, Grok API)
+└── manage.py

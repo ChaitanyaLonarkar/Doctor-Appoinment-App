@@ -1,0 +1,7 @@
+frontend/
+│── src/
+│   │── pages/
+│   │── components/
+│   │── services/   (API calls)
+│   │── chatbot/    (Floating widget)
+│── App.js
