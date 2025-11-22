@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
 
+
+
 ]
 
 MIDDLEWARE = [
@@ -176,3 +178,16 @@ SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
 }
+
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv() # Loads the environment variables from .env
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+GROQ_API_KEY= os.getenv('GROQ_API_KEY')
+
+print("GROQ_API_KEY in settings:", GROQ_API_KEY)
