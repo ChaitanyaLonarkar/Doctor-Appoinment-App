@@ -6,15 +6,20 @@ class SlotSerializer(serializers.ModelSerializer):
         model = Slot
         fields = "__all__"
 
+class SlotidSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Slot
+        fields = ['id']
+
 class AppointmentSerializer(serializers.ModelSerializer):
-    slot = SlotSerializer()
+    # slot = SlotidSerializer()
 
     class Meta:
         model = Appointment
-        fields = "__all__"
+        fields = ['slot', 'patient', 'status',]
 
     # def create(self, validated_data):
-    #     slot_data = validated_data.pop('slot')
-    #     slot = Slot.objects.create(**slot_data)
+    #     slot = validated_data['slot']
+    #     print("slot data", slot)
     #     appointment = Appointment.objects.create(slot=slot, **validated_data)
     #     return appointment

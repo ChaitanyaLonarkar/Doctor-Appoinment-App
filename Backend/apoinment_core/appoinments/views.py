@@ -37,10 +37,10 @@ class UpdateAppointmentView(APIView):
 
 class DeleteAppointmentView(APIView):
     permission_classes = [AllowAny, IsAuthenticated]
-    def delete(self, request, appointment_id):
-        appointment = Appointment.objects.get(id=appointment_id)
+    def delete(self, request, pk):
+        appointment = Appointment.objects.get(id=pk)
         appointment.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"msg":"slot deleted "},status=status.HTTP_204_NO_CONTENT)
 
 
 class GetAllAppointmentsView(APIView):
