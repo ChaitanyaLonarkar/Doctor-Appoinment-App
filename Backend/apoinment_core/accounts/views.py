@@ -30,7 +30,7 @@ class RegisterPatient(APIView):
             
             return Response({"msg":"Patient registered"}, status=201)   
         # return Response({"msg":"Doctor registered"}, status=201)
-        return Response(serializer.errors, status=400)
+        return Response({"msg":serializer.errors}, status=400)
     
 class Login(APIView):
     def post(self, request):
@@ -51,19 +51,25 @@ class Login(APIView):
             print(user,"user")
 
         except Userr.DoesNotExist:
-            return Response({"msg": ("Invalid email or password.")})
+            return Response(status=status.HTTP_404_NOT_FOUND, data={"msg": ("Invalid email or password.")})
       
         # if not user.is_active:
         #     return Response({"msg": ("Your account is inactive. Please contact admin.")})
         if not user.check_password(password):
-            return Response({"msg": ("Invalid email or passworddddd.")})
+            return Response(status=status.HTTP_404_NOT_FOUND, data={"msg": ("Invalid email or password.")})
 
         if user is not None:
             refresh = RefreshToken.for_user(user)
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
-                'msg':    "Login successful"
+                'msg':    "Login successful",
+                'user': {
+                    'id': user.id,
+                    'username': user.username,
+                    'email': user.email,
+                    'role': user.role,
+                }
             }, status=status.HTTP_200_OK)
         else:
             return Response({"msg":"Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)

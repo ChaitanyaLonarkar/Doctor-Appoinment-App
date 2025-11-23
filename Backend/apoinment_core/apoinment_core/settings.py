@@ -26,11 +26,6 @@ SECRET_KEY = 'django-insecure-3k8$-k3kstmw1g)dv+vw#bfs1erh5ez-g7j+0^a!n(bjl)i1ju
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '*',
-    'http://127.0.0.1:8000/'
-]
-
 
 # Application definition
 
@@ -47,10 +42,16 @@ INSTALLED_APPS = [
     'chatbot',
     'rest_framework',
     'rest_framework_simplejwt',
+    'corsheaders',
 
 
 
 ]
+
+
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,6 +61,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+ALLOWED_HOSTS = [
+    '*',
+    'http://127.0.0.1:8000/'
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
 ]
 
 ROOT_URLCONF = 'apoinment_core.urls'
