@@ -46,11 +46,11 @@ const Dashboard = () => {
           ) : (
             <>
               <Link
-                to="/appointments"
+                to="/doctors"
                 className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition cursor-pointer"
               >
                 <div className="text-4xl mb-4">📅</div>
-                <h3 className="text-xl font-semibold mb-2">Book Appointment</h3>
+                <h3 className="text-xl font-semibold mb-2">Get Doctor & Book Appointment</h3>
                 <p className="text-gray-600">
                   Browse available doctors and book appointments
                 </p>

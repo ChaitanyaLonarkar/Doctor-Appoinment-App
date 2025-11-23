@@ -61,9 +61,12 @@ export const appointmentAPI = {
   deleteAppointment: (id) => api.delete(`/appointments/appointment/delete/${id}/`),
 };
 
-// export const userAPI = {
-//   getProfile: () => api.get('/auth/profile/'),
-//   updateProfile: (data) => api.put('/auth/profile/update/', data),
-// };
+export const userAPI = {
+  getProfile: () => api.get('/auth/profile/'),
+  updateProfile: (data) => api.put('/auth/profile/update/', data),
+  getDoctorsList: () => api.get('/appointments/doctors/'),
+  getDoctorsSlots: (id) => api.get(`/appointments/doctor/slots/${id}/`),
+  getPatientAppointments: (id) => api.get(`/appointments/patient/appointments/${id}/`),
+};
 
 export default api;

@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from .models import Userr
 
 from .models import Appointment, Slot
-from .serializers import AppointmentSerializer, SlotSerializer
+from .serializers import AppointmentSerializer, GetAllDoctorListSerializer, SlotSerializer
 
 
 class AppointmentView(APIView):
@@ -91,6 +91,43 @@ class GetAllSlotsView(APIView):
         slots = Slot.objects.all()
         serializer = SlotSerializer(slots, many=True)
         return Response(serializer.data)
+
+# New endpoint: Get slots for a specific doctor
+class GetDoctorSlotsView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, id):
+        slots = Slot.objects.filter(doctor=id)
+        serializer = SlotSerializer(slots, many=True)
+        return Response(serializer.data)
+
+# New endpoint: Get appointments for a specific doctor
+class GetDoctorAppointmentsView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, doctor_id):
+        # Get all slots for this doctor
+        doctor_slots = Slot.objects.filter(doctor=doctor_id)
+        # Get appointments for these slots
+        appointments = Appointment.objects.filter(slot__in=doctor_slots)
+        serializer = AppointmentSerializer(appointments, many=True)
+        return Response(serializer.data)
+
+# New endpoint: Update appointment status (Booked -> Visited)
+class UpdateAppointmentStatusView(APIView):
+    permission_classes = [IsAuthenticated]
+    def patch(self, request, appointment_id):
+        try:
+            appointment = Appointment.objects.get(id=appointment_id)
+            new_status = request.data.get('status')
+            
+            if new_status not in ['Booked', 'Visited']:
+                return Response({"msg": "Invalid status"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            appointment.status = new_status
+            appointment.save()
+            serializer = AppointmentSerializer(appointment)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Appointment.DoesNotExist:
+            return Response({"msg": "Appointment not found"}, status=status.HTTP_404_NOT_FOUND)
     
 class GetAppointmentsByDoctorView(APIView):
     permission_classes = [AllowAny, IsAuthenticated]
@@ -100,8 +137,8 @@ class GetAppointmentsByDoctorView(APIView):
         return Response(serializer.data)
 class GetAppointmentsByPatientView(APIView):
     permission_classes = [AllowAny, IsAuthenticated]
-    def get(self, request, patient_id):
-        appointments = Appointment.objects.filter(patient=patient_id)
+    def get(self, request, id):
+        appointments = Appointment.objects.filter(patient=id)
         serializer = AppointmentSerializer(appointments, many=True)
         return Response(serializer.data)
 
@@ -119,3 +156,12 @@ class GetAppointmentsByDateView(APIView):
         serializer = AppointmentSerializer(appointments, many=True)
         return Response(serializer.data)
 
+
+
+# get all doctor list view
+class GetAllDoctorListView(APIView):
+    permission_classes = [AllowAny, IsAuthenticated]
+    def get(self, request):
+        doctors = Userr.objects.filter(role='doctor')
+        serializer = GetAllDoctorListSerializer(doctors, many=True)
+        return Response(serializer.data)

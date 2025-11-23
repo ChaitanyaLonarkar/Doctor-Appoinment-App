@@ -19,9 +19,12 @@ const Navbar = () => {
                 <Link to="/dashboard" className="hover:text-blue-200 transition">
                   Dashboard
                 </Link>
-                <Link to="/appointments" className="hover:text-blue-200 transition">
-                  Appointments
+                {user.role === 'patient' && (
+                  <Link to="/my-appointments" className="hover:text-blue-200 transition">
+                  My Appointments
                 </Link>
+                )}
+               
                 {user.role === 'doctor' && (
                   <Link to="/slots" className="hover:text-blue-200 transition">
                     My Slots

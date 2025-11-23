@@ -9,6 +9,9 @@ const Appointments = () => {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [patientId, setPatientId] = useState('');
 
+  const userinfo=JSON.parse( localStorage.getItem('user') );
+  // setPatientId(userinfo.id)
+
   useEffect(() => {
     fetchAvailableSlots();
   }, []);
@@ -17,6 +20,7 @@ const Appointments = () => {
     try {
       setLoading(true);
       const response = await slotAPI.getAllSlots();
+      // console.log(response.data,"slots data");
       setSlots(response.data);
     } catch (error) {
       toast.error('Failed to fetch slots');
@@ -30,7 +34,7 @@ const Appointments = () => {
     try {
       await appointmentAPI.createAppointment({
         slot: selectedSlot.id,
-        patient: parseInt(patientId),
+        patient: userinfo.id,
         status: 'Booked',
       });
       toast.success('Appointment booked successfully!');
@@ -55,7 +59,7 @@ const Appointments = () => {
         <h1 className="text-4xl font-bold text-gray-900 mb-8">Available Appointments</h1>
 
         {showBookingForm && selectedSlot && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-blue-100 flex items-center justify-center z-50">
             <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
               <h2 className="text-2xl font-semibold mb-4">Book Appointment</h2>
               <div className="mb-4 p-4 bg-gray-50 rounded-lg">
@@ -67,7 +71,7 @@ const Appointments = () => {
                 </p>
               </div>
               <form onSubmit={handleBookAppointment}>
-                <div className="mb-4">
+                {/* <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Patient ID
                   </label>
@@ -79,7 +83,7 @@ const Appointments = () => {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                     placeholder="Enter your patient ID"
                   />
-                </div>
+                </div> */}
                 <div className="flex gap-4">
                   <button
                     type="submit"

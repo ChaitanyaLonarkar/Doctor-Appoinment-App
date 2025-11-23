@@ -19,5 +19,10 @@ urlpatterns = [
     # other appointment-related urls can be added here
     path('appointment/create/', AppointmentView.as_view(), name='appointment-placeholder'),
     path('appointment/delete/<int:pk>/', DeleteAppointmentView.as_view(), name='appointment-delete'),
+
+    path('doctors/', GetAllDoctorListView.as_view(), name='doctors-list'),
+    path('doctor/slots/<int:id>/', GetDoctorSlotsView.as_view(), name='doctor-slots'),
+
+    path('patient/appointments/<int:id>/', GetAppointmentsByPatientView.as_view(), name='patient-appointments'),
    
 ] 

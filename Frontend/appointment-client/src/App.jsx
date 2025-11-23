@@ -10,6 +10,9 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Appointments from './pages/Appointments';
 import Slots from './pages/Slots';
+import DoctorsList from './pages/DoctorsList';
+import SlotsOfDoctor from './pages/SlotsOfDoctor';
+import PatientAppointments from './pages/PatientAppointments';
 
 function App() {
   return (
@@ -22,6 +25,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path='/doctors' element={<DoctorsList/>} />
+            <Route path='/book-appointment/:id' element={<SlotsOfDoctor/>} />
+            <Route path='/my-appointments' element={<PatientAppointments/>} />
             <Route
               path="/dashboard"
               element={
