@@ -18,8 +18,15 @@ class AppointmentView(APIView):
         return Response(serializer.data)
     
     def post(self, request):
+
+
         serializer = AppointmentSerializer(data=request.data)
+        slot_id = request.data['slot']
+        slot=Slot.objects.get(id=slot_id)
+        print("slot",slot)
         if serializer.is_valid():
+            slot.is_booked = True
+            slot.save()
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -164,4 +171,17 @@ class GetAllDoctorListView(APIView):
     def get(self, request):
         doctors = Userr.objects.filter(role='doctor')
         serializer = GetAllDoctorListSerializer(doctors, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+
+# get all slots of particular doctor that is booked
+
+class GetDoctorBookedSlotsView(APIView):
+    permission_classes = [AllowAny, IsAuthenticated]
+    def get(self, request, id):
+        booked_slots = Slot.objects.filter(is_booked=True, doctor=id)
+        serializer = SlotSerializer(booked_slots, many=True)
+        if not booked_slots:
+            return Response({"msg":"No booked slots found for this doctor"},status=status.HTTP_404_NOT_FOUND)
+        
+        return Response(serializer.data,status=status.HTTP_200_OK)

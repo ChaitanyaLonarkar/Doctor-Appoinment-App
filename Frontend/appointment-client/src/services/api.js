@@ -67,6 +67,7 @@ export const userAPI = {
   getDoctorsList: () => api.get('/appointments/doctors/'),
   getDoctorsSlots: (id) => api.get(`/appointments/doctor/slots/${id}/`),
   getPatientAppointments: (id) => api.get(`/appointments/patient/appointments/${id}/`),
+  getDoctorBookedSlots: (id) => api.get(`/appointments/doctor/booked-slots/${id}/`),
 };
 
 export default api;

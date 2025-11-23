@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -16,19 +16,37 @@ const Navbar = () => {
           <div className="flex items-center gap-6">
             {user ? (
               <>
-                <Link to="/dashboard" className="hover:text-blue-200 transition">
+                <Link
+                  to="/dashboard"
+                  className="hover:text-blue-200 transition"
+                >
                   Dashboard
                 </Link>
-                {user.role === 'patient' && (
-                  <Link to="/my-appointments" className="hover:text-blue-200 transition">
-                  My Appointments
-                </Link>
-                )}
-               
-                {user.role === 'doctor' && (
-                  <Link to="/slots" className="hover:text-blue-200 transition">
-                    My Slots
+                {user.role === "patient" && (
+                  <Link
+                    to="/my-appointments"
+                    className="hover:text-blue-200 transition"
+                  >
+                    My Appointments
                   </Link>
+                )}
+
+                {user.role === "doctor" && (
+                  <div className="flex items-center gap-6">
+                    <Link
+                      to="/slots"
+                      className="hover:text-blue-200 transition"
+                    >
+                      My Slots
+                    </Link>
+
+                    <Link
+                      to="/my-booked-slots"
+                      className="hover:text-blue-200 transition"
+                    >
+                      My Booked Slots
+                    </Link>
+                  </div>
                 )}
                 <span className="text-sm">Welcome, {user.username}</span>
                 <button

@@ -24,5 +24,7 @@ urlpatterns = [
     path('doctor/slots/<int:id>/', GetDoctorSlotsView.as_view(), name='doctor-slots'),
 
     path('patient/appointments/<int:id>/', GetAppointmentsByPatientView.as_view(), name='patient-appointments'),
+
+    path('doctor/booked-slots/<int:id>/', GetDoctorBookedSlotsView.as_view(), name='doctor-booked-slots'),
    
 ] 

@@ -27,7 +27,7 @@ const Dashboard = () => {
               </Link>
 
               <Link
-                to="/appointments"
+                to="/my-booked-slots"
                 className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition cursor-pointer"
               >
                 <div className="text-4xl mb-4">📋</div>

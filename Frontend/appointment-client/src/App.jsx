@@ -13,6 +13,7 @@ import Slots from './pages/Slots';
 import DoctorsList from './pages/DoctorsList';
 import SlotsOfDoctor from './pages/SlotsOfDoctor';
 import PatientAppointments from './pages/PatientAppointments';
+import BookedSlots from './pages/BookedSlots';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path='/doctors' element={<DoctorsList/>} />
             <Route path='/book-appointment/:id' element={<SlotsOfDoctor/>} />
             <Route path='/my-appointments' element={<PatientAppointments/>} />
+            <Route path='/my-booked-slots' element={<BookedSlots/>} />
             <Route
               path="/dashboard"
               element={
@@ -53,6 +55,7 @@ function App() {
               }
             />
           </Routes>
+          
         </div>
       </AuthProvider>
     </Router>
