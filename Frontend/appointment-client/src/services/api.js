@@ -68,6 +68,8 @@ export const userAPI = {
   getDoctorsSlots: (id) => api.get(`/appointments/doctor/slots/${id}/`),
   getPatientAppointments: (id) => api.get(`/appointments/patient/appointments/${id}/`),
   getDoctorBookedSlots: (id) => api.get(`/appointments/doctor/booked-slots/${id}/`),
+  getDoctorAppointmentsWithPatient: () => api.get('/appointments/doctor/appointments/'),
+  updateAppointmentStatus: (id, data) => api.patch(`/appointments/appointments/${id}/update/`, data),
 };
 
 export const chatbotAPI = {

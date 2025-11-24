@@ -18,6 +18,7 @@ import ChatbotWidget from './components/ChatbotWidget';
 import AdminDashboard from './pages/AdminDashboard';
 import NotFound from './components/NotFound';
 import {useAuth} from './context/AuthContext';
+import DoctorAppointments from './pages/DoctorAppintment';
 
 function App() {
 const { user } = useAuth();
@@ -40,6 +41,8 @@ const { user } = useAuth();
             <Route path='/my-booked-slots' element={<BookedSlots/>} />
             <Route path='/admin' element={<AdminDashboard/>}/>
             <Route path='/notfound' element={<NotFound/>}/>
+            <Route path="*" element={<NotFound/>}/>
+            <Route path='/doctor-appointments' element={<DoctorAppointments/>}/>
             <Route
               path="/dashboard"
               element={
@@ -62,6 +65,7 @@ const { user } = useAuth();
               element={
                 <ProtectedRoute>
                   <Slots />
+                  {/* <SlotsOfDoctor/> */}
                 </ProtectedRoute>
               }
             />

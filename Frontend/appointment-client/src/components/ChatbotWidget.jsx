@@ -3,7 +3,7 @@ import { chatbotAPI } from "../services/api";
 
 const ChatbotWidget = () => {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([{ sender: "bot", text: "Hello there👋  How can I assist you?" }]);
   const [input, setInput] = useState("");
 
   const toggleChat = () => setOpen(!open);

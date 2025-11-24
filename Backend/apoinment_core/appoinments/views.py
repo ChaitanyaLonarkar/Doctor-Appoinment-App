@@ -185,3 +185,46 @@ class GetDoctorBookedSlotsView(APIView):
             return Response({"msg":"No booked slots found for this doctor"},status=status.HTTP_404_NOT_FOUND)
         
         return Response(serializer.data,status=status.HTTP_200_OK)
+    
+
+
+# views.py
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+from .models import Appointment
+from .serializers import AppointmenttSerializer
+# from .permissions import IsDoctor
+
+class DoctorAppointmentsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        doctor = request.user
+
+        appointments = Appointment.objects.filter(slot__doctor=doctor).select_related(
+            "slot", "patient"
+        )
+
+        serializer = AppointmenttSerializer(appointments, many=True)
+
+        return Response({
+            "doctor": doctor.username,
+            "appointments_count": appointments.count(),
+            "appointments": serializer.data
+        })
+
+class UpdateAppointmentStatusView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, pk):
+        try:
+            appointment = Appointment.objects.get(id=pk, slot__doctor=request.user)
+        except Appointment.DoesNotExist:
+            return Response({"error": "Not allowed"}, status=403)
+
+        appointment.status = request.data.get("status", appointment.status)
+        appointment.save()
+
+        return Response({"message": "Status updated successfully"})

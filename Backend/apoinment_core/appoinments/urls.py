@@ -26,5 +26,8 @@ urlpatterns = [
     path('patient/appointments/<int:id>/', GetAppointmentsByPatientView.as_view(), name='patient-appointments'),
 
     path('doctor/booked-slots/<int:id>/', GetDoctorBookedSlotsView.as_view(), name='doctor-booked-slots'),
+
+    path('doctor/appointments/', DoctorAppointmentsView.as_view(), name='doctor-appointments'),
+    path("appointments/<int:pk>/update/", UpdateAppointmentStatusView.as_view()),
    
 ] 

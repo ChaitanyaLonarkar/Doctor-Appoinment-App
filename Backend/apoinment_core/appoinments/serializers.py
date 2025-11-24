@@ -38,3 +38,24 @@ class GetAllDoctorListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Userr
         fields = ['id', 'username', 'email', 'specialization', 'role']
+
+
+
+
+class PatienttSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Userr
+        fields = ['id', 'username', 'email']
+
+class SlottSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Slot
+        fields = ['id', 'date', 'start_time', 'end_time', 'is_booked']
+
+class AppointmenttSerializer(serializers.ModelSerializer):
+    patient = PatienttSerializer()
+    slot = SlottSerializer()
+
+    class Meta:
+        model = Appointment
+        fields = ['id', 'slot', 'patient', 'status']

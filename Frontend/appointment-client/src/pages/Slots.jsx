@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { slotAPI } from '../services/api';
+import { userAPI, slotAPI } from '../services/api';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 
@@ -27,7 +27,7 @@ const Slots = () => {
   const fetchSlots = async () => {
     try {
       setLoading(true);
-      const response = await slotAPI.getAllSlots();
+      const response = await userAPI.getDoctorsSlots(userinfo.id);
       setSlots(response.data);
     } catch (error) {
       toast.error('Failed to fetch slots');
