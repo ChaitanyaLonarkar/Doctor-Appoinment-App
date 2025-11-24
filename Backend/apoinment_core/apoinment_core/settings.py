@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
-    "pdf_rag"
+    "pdf_rag",
+    'pdf_rag_chat',
 
 
 

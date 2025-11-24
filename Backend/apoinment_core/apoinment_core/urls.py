@@ -26,6 +26,7 @@ urlpatterns = [
     path('api/appointments/', include('appoinments.urls')),
     path('api/admin/', include('adminpanel.urls')),
     # path('api/chatbot/', include('chatbot.urls')),
-    path('api/pdf_rag/', include('pdf_rag.urls')),
+    # path('api/pdf_rag/', include('pdf_rag.urls')),
+    path('api/pdf_rag_chat/', include('pdf_rag_chat.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
