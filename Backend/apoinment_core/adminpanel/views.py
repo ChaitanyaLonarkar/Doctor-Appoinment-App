@@ -11,7 +11,7 @@ from appoinments.models import Appointment
 from .serializers import AdminAppointmentSerializer
 
 class AdminAppointmentListView(APIView):
-    # permission_classes = [permissions.IsAdminUser]   # Only admin can access
+    permission_classes = [permissions.IsAdminUser]   # Only admin can access
 
     def get(self, request):
         appointments = Appointment.objects.select_related("slot", "patient", "slot__doctor").all().order_by("slot__date", "slot__start_time")

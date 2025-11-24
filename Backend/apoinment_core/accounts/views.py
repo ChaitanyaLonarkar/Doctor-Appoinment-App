@@ -73,3 +73,17 @@ class Login(APIView):
             }, status=status.HTTP_200_OK)
         else:
             return Response({"msg":"Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response({"msg":"Logout successful"}, status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response({"msg":"Bad request"}, status=status.HTTP_400_BAD_REQUEST)

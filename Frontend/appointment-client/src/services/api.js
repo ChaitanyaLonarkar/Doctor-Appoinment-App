@@ -43,7 +43,7 @@ export const authAPI = {
   registerDoctor: (data) => api.post('/auth/register/doctor/', data),
   registerPatient: (data) => api.post('/auth/register/patient/', data),
   login: (data) => api.post('/auth/login/', data),
-  // logout: () => api.post('/auth/logout/'),
+  logout: () => api.post('/auth/logout/'),
 };
 
 // Slot APIs

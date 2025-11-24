@@ -78,7 +78,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    // const response = authAPI.logout();
+    const response = authAPI.logout();
+    console.log('Logout Response:', response);
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('user');

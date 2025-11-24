@@ -4,14 +4,19 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from .models import Userr
+from .models import Userr, Appointment, Slot
+from .serializers import (
+    AppointmentSerializer,
+    AppointmentwithSlotSerializer,
+    GetAllDoctorListSerializer,
+    SlotSerializer,
+    AppointmenttSerializer
+)
+from .permissions import IsPatient , IsDoctor
 
-from .models import Appointment, Slot
-from .serializers import AppointmentSerializer, AppointmentwithSlotSerializer, GetAllDoctorListSerializer, SlotSerializer
-
-
+# used
 class AppointmentView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
+    permission_classes = [IsPatient, IsAuthenticated]
     def get(self, request, appointment_id):
         appointment = Appointment.objects.get(id=appointment_id)
         serializer = AppointmentSerializer(appointment)
@@ -32,33 +37,36 @@ class AppointmentView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-class UpdateAppointmentView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
-    def put(self, request, appointment_id):
-        appointment = Appointment.objects.get(id=appointment_id)
-        serializer = AppointmentSerializer(appointment, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class UpdateAppointmentView(APIView):
+#     permission_classes = [AllowAny, IsAuthenticated]
+#     def put(self, request, appointment_id):
+#         appointment = Appointment.objects.get(id=appointment_id)
+#         serializer = AppointmentSerializer(appointment, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# used 
 class DeleteAppointmentView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
+    permission_classes = [IsPatient, IsAuthenticated]
     def delete(self, request, pk):
         appointment = Appointment.objects.get(id=pk)
         appointment.delete()
         return Response({"msg":"slot deleted "},status=status.HTTP_204_NO_CONTENT)
 
 
-class GetAllAppointmentsView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
-    def get(self, request):
-        appointments = Appointment.objects.all()
-        serializer = AppointmentSerializer(appointments, many=True)
-        return Response(serializer.data)
+# class GetAllAppointmentsView(APIView):
+#     permission_classes = [AllowAny, IsAuthenticated]
+#     def get(self, request):
+#         appointments = Appointment.objects.all()
+#         serializer = AppointmentSerializer(appointments, many=True)
+#         return Response(serializer.data)
     
-class SlotView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
+# used
+class SlotView(APIView):  
+    permission_classes = [IsDoctor, IsAuthenticated]
     def get(self, request, pk):
         slot = Slot.objects.get(id=pk)
         serializer = SlotSerializer(slot)
@@ -74,9 +82,11 @@ class SlotView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+# used
 class UpdateSlotView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
+    permission_classes = [IsDoctor, IsAuthenticated]
     def put(self, request, pk):
         slot = Slot.objects.get(id=pk)
         serializer = SlotSerializer(slot, data=request.data)
@@ -85,13 +95,16 @@ class UpdateSlotView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# used
 class DeleteSlotView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
+    permission_classes = [IsDoctor, IsAuthenticated]
     def delete(self, request, pk):
         slot = Slot.objects.get(id=pk)
         slot.delete()
         return Response({"msg":"slot deleted "},status=status.HTTP_204_NO_CONTENT)
     
+# used
 class GetAllSlotsView(APIView):
     permission_classes = [AllowAny, IsAuthenticated]
     def get(self, request):
@@ -99,75 +112,81 @@ class GetAllSlotsView(APIView):
         serializer = SlotSerializer(slots, many=True)
         return Response(serializer.data)
 
+
+# used
 # New endpoint: Get slots for a specific doctor
 class GetDoctorSlotsView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsPatient,IsAuthenticated]
     def get(self, request, id):
         slots = Slot.objects.filter(doctor=id)
         serializer = SlotSerializer(slots, many=True)
         return Response(serializer.data)
 
 # New endpoint: Get appointments for a specific doctor
-class GetDoctorAppointmentsView(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request, doctor_id):
-        # Get all slots for this doctor
-        doctor_slots = Slot.objects.filter(doctor=doctor_id)
-        # Get appointments for these slots
-        appointments = Appointment.objects.filter(slot__in=doctor_slots)
-        serializer = AppointmentSerializer(appointments, many=True)
-        return Response(serializer.data)
+# class GetDoctorAppointmentsView(APIView):
+#     permission_classes = [IsAuthenticated]
+#     def get(self, request, doctor_id):
+#         # Get all slots for this doctor
+#         doctor_slots = Slot.objects.filter(doctor=doctor_id)
+#         # Get appointments for these slots
+#         appointments = Appointment.objects.filter(slot__in=doctor_slots)
+#         serializer = AppointmentSerializer(appointments, many=True)
+#         return Response(serializer.data)
 
+# used
 # New endpoint: Update appointment status (Booked -> Visited)
-class UpdateAppointmentStatusView(APIView):
-    permission_classes = [IsAuthenticated]
-    def patch(self, request, appointment_id):
-        try:
-            appointment = Appointment.objects.get(id=appointment_id)
-            new_status = request.data.get('status')
+# class UpdateAppointmentStatusView(APIView):
+#     permission_classes = [IsAuthenticated]
+#     def patch(self, request, appointment_id):
+#         try:
+#             appointment = Appointment.objects.get(id=appointment_id)
+#             new_status = request.data.get('status')
             
-            if new_status not in ['Booked', 'Visited']:
-                return Response({"msg": "Invalid status"}, status=status.HTTP_400_BAD_REQUEST)
+#             if new_status not in ['Booked', 'Visited']:
+#                 return Response({"msg": "Invalid status"}, status=status.HTTP_400_BAD_REQUEST)
             
-            appointment.status = new_status
-            appointment.save()
-            serializer = AppointmentSerializer(appointment)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Appointment.DoesNotExist:
-            return Response({"msg": "Appointment not found"}, status=status.HTTP_404_NOT_FOUND)
+#             appointment.status = new_status
+#             appointment.save()
+#             serializer = AppointmentSerializer(appointment)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         except Appointment.DoesNotExist:
+#             return Response({"msg": "Appointment not found"}, status=status.HTTP_404_NOT_FOUND)
     
-class GetAppointmentsByDoctorView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
-    def get(self, request, doctor_id):
-        appointments = Appointment.objects.filter(doctor=doctor_id)
-        serializer = AppointmentSerializer(appointments, many=True)
-        return Response(serializer.data)
+# class GetAppointmentsByDoctorView(APIView):
+#     permission_classes = [AllowAny, IsAuthenticated]
+#     def get(self, request, doctor_id):
+#         appointments = Appointment.objects.filter(doctor=doctor_id)
+#         serializer = AppointmentSerializer(appointments, many=True)
+#         return Response(serializer.data)
+    
+# used
 class GetAppointmentsByPatientView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
+    permission_classes = [IsPatient, IsAuthenticated]
     def get(self, request, id):
         appointments = Appointment.objects.filter(patient=id)
         serializer = AppointmentSerializer(appointments, many=True)
         return Response(serializer.data)
 
-class GetAppointmentsByStatusView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
-    def get(self, request, status):
-        appointments = Appointment.objects.filter(status=status)
-        serializer = AppointmentSerializer(appointments, many=True)
-        return Response(serializer.data)
+# class GetAppointmentsByStatusView(APIView):
+#     permission_classes = [AllowAny, IsAuthenticated]
+#     def get(self, request, status):
+#         appointments = Appointment.objects.filter(status=status)
+#         serializer = AppointmentSerializer(appointments, many=True)
+#         return Response(serializer.data)
 
-class GetAppointmentsByDateView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
-    def get(self, request, date):
-        appointments = Appointment.objects.filter(date=date)
-        serializer = AppointmentSerializer(appointments, many=True)
-        return Response(serializer.data)
+# class GetAppointmentsByDateView(APIView):
+#     permission_classes = [AllowAny, IsAuthenticated]
+#     def get(self, request, date):
+#         appointments = Appointment.objects.filter(date=date)
+#         serializer = AppointmentSerializer(appointments, many=True)
+#         return Response(serializer.data)
 
 
 
+# used
 # get all doctor list view
 class GetAllDoctorListView(APIView):
-    permission_classes = [AllowAny, IsAuthenticated]
+    permission_classes = [IsPatient, IsAuthenticated]
     def get(self, request):
         doctors = Userr.objects.filter(role='doctor')
         serializer = GetAllDoctorListSerializer(doctors, many=True)
@@ -176,9 +195,12 @@ class GetAllDoctorListView(APIView):
 
 # get all slots of particular doctor that is booked
 
+
+# used
 class GetDoctorBookedSlotsView(APIView):
     permission_classes = [AllowAny, IsAuthenticated]
     def get(self, request, id):
+        
         booked_slots = Slot.objects.filter(is_booked=True, doctor=id)
         serializer = SlotSerializer(booked_slots, many=True)
         if not booked_slots:
@@ -187,18 +209,9 @@ class GetDoctorBookedSlotsView(APIView):
         return Response(serializer.data,status=status.HTTP_200_OK)
     
 
-
-# views.py
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-
-from .models import Appointment
-from .serializers import AppointmenttSerializer
-# from .permissions import IsDoctor
-
+# used
 class DoctorAppointmentsView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsDoctor, IsAuthenticated]
 
     def get(self, request):
         doctor = request.user
@@ -215,8 +228,9 @@ class DoctorAppointmentsView(APIView):
             "appointments": serializer.data
         })
 
+# used
 class UpdateAppointmentStatusView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsDoctor,IsAuthenticated]
 
     def patch(self, request, pk):
         try:
@@ -230,17 +244,9 @@ class UpdateAppointmentStatusView(APIView):
         return Response({"message": "Status updated successfully"})
 
 
-# views.py
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-
-from .models import Appointment
-from .serializers import AppointmentSerializer
-from .permissions import IsPatient
-
+# used
 class PatientAppointmentsView(APIView):
-    permission_classes = [IsAuthenticated, IsPatient]
+    permission_classes = [IsPatient,IsAuthenticated, IsPatient]
 
     def get(self, request):
         patient = request.user
