@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+
+import {ProtectedRoute }from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -15,29 +15,37 @@ import SlotsOfDoctor from './pages/SlotsOfDoctor';
 import PatientAppointments from './pages/PatientAppointments';
 import BookedSlots from './pages/BookedSlots';
 import ChatbotWidget from './components/ChatbotWidget';
+import AdminDashboard from './pages/AdminDashboard';
+import NotFound from './components/NotFound';
+import {useAuth} from './context/AuthContext';
 
 function App() {
-
+const { user } = useAuth();
+// console.log(user?.role,"sdfasdfdsafasdfdasfasdf");
   
   return (
     <Router>
-      <AuthProvider>
+      
         <div className="min-h-screen bg-gray-50">
           <Navbar />
           <Toaster position="top-right" />
           <Routes>
-            <Route path="/" element={<Home />} />
+            {!user && <Route path="/" element={<Home />} />}
+            
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path='/doctors' element={<DoctorsList/>} />
             <Route path='/book-appointment/:id' element={<SlotsOfDoctor/>} />
             <Route path='/my-appointments' element={<PatientAppointments/>} />
             <Route path='/my-booked-slots' element={<BookedSlots/>} />
+            <Route path='/admin' element={<AdminDashboard/>}/>
+            <Route path='/notfound' element={<NotFound/>}/>
             <Route
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  {user?.role === 'Admin' ? <AdminDashboard /> : <Dashboard />}
+                  {/* <Dashboard /> */}
                 </ProtectedRoute>
               }
             />
@@ -60,8 +68,7 @@ function App() {
           </Routes>
           <ChatbotWidget/>
         </div>
-      </AuthProvider>
-    </Router>
+      </Router>
   );
 }
 

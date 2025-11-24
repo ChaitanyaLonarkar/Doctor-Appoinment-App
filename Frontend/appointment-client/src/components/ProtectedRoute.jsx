@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const ProtectedRoute = ({ children }) => {
+export const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -14,10 +14,52 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/notfound" replace />;
   }
 
   return children;
 };
 
-export default ProtectedRoute;
+export const AdminProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+  if (!user || user.role !== "Admin") {
+    return <Navigate to="/notfound" replace />;
+  }
+  return children;
+}
+
+export const DoctorProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+  if (!user || user.role !== "doctor") {
+    return <Navigate to="/notfound" replace />;
+  }
+  return children;}
+
+export const PatientProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+  if (!user || user.role !== "patient") {
+    return <Navigate to="/notfound" replace />;
+  }
+  return children;
+}

@@ -75,4 +75,7 @@ export const chatbotAPI = {
   getChatHistory: () => api.get('/chatbot/chat-history/'),
 };
 
+export const AdminAPI = {
+  getAppointments:() => api.get('/admin/adminpanel/'),
+}
 export default api;

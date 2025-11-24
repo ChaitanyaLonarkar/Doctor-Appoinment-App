@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { userAPI } from "../services/api";
 import { Link } from "react-router-dom";
@@ -27,7 +26,7 @@ function DoctorsList() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className=" bg-gray-50 py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-4xl font-bold text-gray-900 mb-8">
             Available Doctors
@@ -53,11 +52,10 @@ function DoctorsList() {
                   <div>
                     <div className="text-4xl mb-4">👨‍⚕️</div>
                     <div>
-
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Doctor ID: {doctor.id}
-                    </h3>
-                    <p className="text-sm text-gray-600">Available Slot</p>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Doctor ID: {doctor.id}
+                      </h3>
+                      <p className="text-sm text-gray-600">Available Slot</p>
                     </div>
                   </div>
                   <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
