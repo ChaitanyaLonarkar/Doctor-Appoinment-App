@@ -56,17 +56,17 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center px-4 py-12">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Register</h2>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center px-4 py-12">
+      <div className="bg-white p-10 rounded-2xl shadow-2xl max-w-md w-full border-2 border-indigo-100">
+        <h2 className="text-4xl font-bold text-center bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-10">Register</h2>
 
         <div className="flex gap-4 mb-6">
           <button
             type="button"
             onClick={() => setUserType('patient')}
-            className={`flex-1 py-2 rounded-lg font-semibold transition ${
+            className={`flex-1 py-3 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 ${
               userType === 'patient'
-                ? 'bg-blue-600 text-white'
+                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
@@ -75,9 +75,9 @@ const Register = () => {
           <button
             type="button"
             onClick={() => setUserType('doctor')}
-            className={`flex-1 py-2 rounded-lg font-semibold transition ${
+            className={`flex-1 py-3 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 ${
               userType === 'doctor'
-                ? 'bg-blue-600 text-white'
+                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
@@ -87,7 +87,7 @@ const Register = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Username
             </label>
             <input
@@ -96,13 +96,13 @@ const Register = () => {
               value={formData.username}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-300"
               placeholder="Enter username"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Email
             </label>
             <input
@@ -111,13 +111,13 @@ const Register = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-300"
               placeholder="Enter email"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Password
             </label>
             <input
@@ -126,14 +126,14 @@ const Register = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-300"
               placeholder="Enter password"
             />
           </div>
 
           {userType === 'patient' ? (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Phone Number
               </label>
               <input
@@ -141,13 +141,13 @@ const Register = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-300"
                 placeholder="Enter phone number"
               />
             </div>
           ) : (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Specialization
               </label>
               <input
@@ -156,7 +156,7 @@ const Register = () => {
                 value={formData.specialization}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-300"
                 placeholder="e.g., Cardiologist, Dentist"
               />
             </div>
@@ -166,15 +166,15 @@ const Register = () => {
             type="submit"
             disabled={loading}
             onClick={handleSubmit}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:bg-gray-400 mt-6"
+            className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-3 rounded-xl font-bold hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-6 shadow-lg hover:shadow-2xl transform hover:scale-105"
           >
             {loading ? 'Registering...' : 'Register'}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-gray-600">
+        <p className="mt-8 text-center text-gray-600">
           Already have an account?{' '}
-          <Link to="/login" className="text-blue-600 hover:text-blue-800 font-semibold">
+          <Link to="/login" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-bold transition-all duration-300">
             Login
           </Link>
         </p>

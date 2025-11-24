@@ -32,7 +32,7 @@ const ChatbotWidget = () => {
     <>
       {/* Floating Chat Button */}
       <div
-        className="fixed bottom-6 right-6 bg-grey-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-xl cursor-pointer hover:scale-110 transition-transform duration-200 z-50"
+        className="fixed bottom-6 right-6 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl cursor-pointer hover:scale-110 transition-all duration-300 z-50 animate-pulse hover:animate-none"
         onClick={toggleChat}
       >
         🤖
@@ -40,12 +40,15 @@ const ChatbotWidget = () => {
 
       {/* Chat Window */}
       {open && (
-        <div className="fixed bottom-28 right-6 w-80 h-96 bg-white rounded-xl shadow-2xl flex flex-col z-50 animate-fadeIn border border-gray-200">
+        <div className="fixed bottom-28 right-6 w-80 h-96 bg-white rounded-2xl shadow-2xl flex flex-col z-50 animate-fadeIn border-2 border-indigo-200">
           {/* Header */}
-          <div className="bg-blue-600 text-white p-3 rounded-t-xl flex justify-between items-center">
-            <span className="font-semibold">Chat Assistant</span>
+          <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-4 rounded-t-2xl flex justify-between items-center shadow-lg">
+            <span className="font-semibold text-lg flex items-center gap-2">
+              <span className="text-2xl">🤖</span>
+              Chat Assistant
+            </span>
             <button
-              className="text-lg hover:text-gray-300"
+              className="text-xl hover:text-gray-300 transition-all hover:rotate-90 duration-300"
               onClick={toggleChat}
             >
               ✖
@@ -53,14 +56,14 @@ const ChatbotWidget = () => {
           </div>
 
           {/*Chat Messages*/}
-          <div className="flex-1 p-3 overflow-y-auto bg-gray-50 space-y-2">
+          <div className="flex-1 p-4 overflow-y-auto bg-gradient-to-b from-gray-50 to-blue-50 space-y-3">
             {messages.map((msg, i) => (
               <div
                 key={i}
-                className={`p-2 rounded-lg max-w-[75%] break-words whitespace-pre-wrap ${
+                className={`p-3 rounded-xl max-w-[75%] break-words whitespace-pre-wrap shadow-md transition-all duration-300 ${
                   msg.sender === "user"
-                    ? "bg-blue-100 ml-auto text-right"
-                    : "bg-gray-200 mr-auto"
+                    ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white ml-auto text-right"
+                    : "bg-white mr-auto border border-gray-200"
                 }`}
               >
                 {msg.text}
@@ -69,9 +72,9 @@ const ChatbotWidget = () => {
           </div>
 
           {/* Input Section */}
-          <div className="p-3 border-t bg-white flex items-end space-x-2">
+          <div className="p-4 border-t-2 border-indigo-100 bg-white flex items-end space-x-2 rounded-b-2xl">
             <input style={{width:"75%"}}
-              className=" border border-gray-300 rounded-lg px-3 py-2  overflow-y-auto max-h-32 outline-none"
+              className="border-2 border-indigo-200 rounded-xl px-4 py-2 overflow-y-auto max-h-32 outline-none focus:border-indigo-500 transition-all duration-300"
               placeholder="Type a message..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -80,7 +83,7 @@ const ChatbotWidget = () => {
 
             <button
               onClick={sendMessage}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 whitespace-nowrap"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-xl hover:from-blue-700 hover:to-indigo-700 whitespace-nowrap transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               Send
             </button>

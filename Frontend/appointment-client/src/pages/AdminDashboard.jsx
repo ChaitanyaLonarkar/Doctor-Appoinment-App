@@ -30,31 +30,31 @@ function AdminDashboard() {
       {/* doctors list component */}
       <DoctorsList />
 
-      <div className=" flex justify-center items-center py-12 ">
+      <div className="flex justify-center items-center py-12 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
         <div>
 
-        <h1 className="text-2xl font-bold mb-4">Admin Appointment Overview</h1>
+        <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">Admin Appointment Overview</h1>
 
-        <div className="overflow-x-auto rounded-lg shadow-md">
-          <table className="min-w-full bg-white border border-gray-200">
-            <thead className="bg-gray-100">
+        <div className="overflow-x-auto rounded-2xl shadow-2xl border-2 border-indigo-100">
+          <table className="min-w-full bg-white border-2 border-indigo-200">
+            <thead className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
               <tr>
-                <th className="px-4 py-3 border-b text-left font-semibold">
+                <th className="px-6 py-4 border-b-2 border-indigo-300 text-left font-bold text-sm uppercase tracking-wider">
                   ID
                 </th>
-                <th className="px-4 py-3 border-b text-left font-semibold">
+                <th className="px-6 py-4 border-b-2 border-indigo-300 text-left font-bold text-sm uppercase tracking-wider">
                   Patient
                 </th>
-                <th className="px-4 py-3 border-b text-left font-semibold">
+                <th className="px-6 py-4 border-b-2 border-indigo-300 text-left font-bold text-sm uppercase tracking-wider">
                   Doctor
                 </th>
-                <th className="px-4 py-3 border-b text-left font-semibold">
+                <th className="px-6 py-4 border-b-2 border-indigo-300 text-left font-bold text-sm uppercase tracking-wider">
                   Date
                 </th>
-                <th className="px-4 py-3 border-b text-left font-semibold">
+                <th className="px-6 py-4 border-b-2 border-indigo-300 text-left font-bold text-sm uppercase tracking-wider">
                   Time
                 </th>
-                <th className="px-4 py-3 border-b text-left font-semibold">
+                <th className="px-6 py-4 border-b-2 border-indigo-300 text-left font-bold text-sm uppercase tracking-wider">
                   Status
                 </th>
               </tr>
@@ -69,22 +69,22 @@ function AdminDashboard() {
                 </tr>
               ) : (
                 appointments.map((app) => (
-                  <tr key={app.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 border-b">{app.id}</td>
-                    <td className="px-4 py-3 border-b">{app.patient_name}</td>
-                    <td className="px-4 py-3 border-b">{app.doctor_name}</td>
-                    <td className="px-4 py-3 border-b">
+                  <tr key={app.id} className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300">
+                    <td className="px-6 py-4 border-b font-medium">{app.id}</td>
+                    <td className="px-6 py-4 border-b font-medium">{app.patient_name}</td>
+                    <td className="px-6 py-4 border-b font-medium">{app.doctor_name}</td>
+                    <td className="px-6 py-4 border-b font-medium">
                       {app.appointment_date}
                     </td>
-                    <td className="px-4 py-3 border-b">
+                    <td className="px-6 py-4 border-b font-medium">
                       {app.start_time} - {app.end_time}
                     </td>
-                    <td className="px-4 py-3 border-b">
+                    <td className="px-6 py-4 border-b font-medium">
                       <span
-                        className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                        className={`px-4 py-2 rounded-full text-sm font-bold shadow-lg ${
                           app.status === "Visited"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-yellow-100 text-yellow-700"
+                            ? "bg-gradient-to-r from-green-400 to-green-500 text-white"
+                            : "bg-gradient-to-r from-yellow-400 to-yellow-500 text-white"
                         }`}
                       >
                         {app.status}

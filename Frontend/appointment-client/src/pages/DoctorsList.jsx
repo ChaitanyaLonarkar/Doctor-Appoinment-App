@@ -26,9 +26,9 @@ function DoctorsList() {
 
   return (
     <>
-      <div className=" bg-gray-50 py-12 px-4">
+      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 min-h-screen">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-bold text-gray-900 mb-8">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-12">
             Available Doctors
           </h1>
 
@@ -46,34 +46,34 @@ function DoctorsList() {
               // </div>
               <div
                 key={doctor.id}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition"
+                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border-2 border-indigo-100"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <div className="text-4xl mb-4">👨‍⚕️</div>
+                    <div className="text-5xl mb-6">👨‍⚕️</div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-xl font-bold text-gray-900">
                         Doctor ID: {doctor.id}
                       </h3>
-                      <p className="text-sm text-gray-600">Available Slot</p>
+                      <p className="text-sm text-indigo-600 font-medium">Available Slot</p>
                     </div>
                   </div>
-                  <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
+                  <span className="px-4 py-2 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-full text-xs font-bold shadow-lg">
                     Available
                   </span>
                 </div>
-                <div className="space-y-2 mb-4">
-                  <h3 className="text-xl font-semibold mb-2">
+                <div className="space-y-3 mb-6">
+                  <h3 className="text-2xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                     {doctor.username}
                   </h3>
-                  <p className="text-gray-600 mb-2">
+                  <p className="text-gray-600 mb-3 font-medium">
                     Specialization: {doctor.specialization}
                   </p>
                   <p className="text-gray-600">Email: {doctor.email}</p>
                 </div>
                 <Link
                   to={`/book-appointment/${doctor.id}`}
-                  className="flex justify-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                  className="flex justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 font-bold"
                 >
                   View Doctor's Slots
                 </Link>

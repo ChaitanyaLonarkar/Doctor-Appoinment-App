@@ -54,19 +54,19 @@ const Appointments = () => {
   };
 
   return (
-    <div className=" bg-gray-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Available Appointments</h1>
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-12">Available Appointments</h1>
 
         {showBookingForm && selectedSlot && (
-          <div className="fixed inset-0 bg-blue-100 flex items-center justify-center z-50">
-            <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
-              <h2 className="text-2xl font-semibold mb-4">Book Appointment</h2>
-              <div className="mb-4 p-4 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600">
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-white p-10 rounded-2xl shadow-2xl max-w-md w-full mx-4 border-2 border-indigo-200">
+              <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Book Appointment</h2>
+              <div className="mb-6 p-5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border-2 border-indigo-200">
+                <p className="text-sm text-gray-700 font-medium">
                   <strong>Date:</strong> {selectedSlot.date}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-700 font-medium">
                   <strong>Time:</strong> {selectedSlot.start_time} - {selectedSlot.end_time}
                 </p>
               </div>
@@ -87,7 +87,7 @@ const Appointments = () => {
                 <div className="flex gap-4">
                   <button
                     type="submit"
-                    className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                    className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 font-bold"
                   >
                     Confirm Booking
                   </button>
@@ -97,7 +97,7 @@ const Appointments = () => {
                       setShowBookingForm(false);
                       setSelectedSlot(null);
                     }}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition"
+                    className="flex-1 bg-gray-300 text-gray-700 py-3 rounded-xl hover:bg-gray-400 transition-all duration-300 font-bold"
                   >
                     Cancel
                   </button>
@@ -109,7 +109,7 @@ const Appointments = () => {
 
         {loading ? (
           <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-600 shadow-lg"></div>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -123,30 +123,30 @@ const Appointments = () => {
                 .map((slot) => (
                   <div
                     key={slot.id}
-                    className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition"
+                    className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border-2 border-indigo-100"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="text-xl font-bold text-gray-900">
                           Doctor ID: {slot.doctor}
                         </h3>
-                        <p className="text-sm text-gray-600">Available Slot</p>
+                        <p className="text-sm text-indigo-600 font-medium">Available Slot</p>
                       </div>
-                      <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
+                      <span className="px-4 py-2 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-full text-xs font-bold shadow-lg">
                         Available
                       </span>
                     </div>
-                    <div className="space-y-2 mb-4">
-                      <p className="text-gray-700">
+                    <div className="space-y-3 mb-6">
+                      <p className="text-gray-700 font-medium">
                         <strong>Date:</strong> {slot.date}
                       </p>
-                      <p className="text-gray-700">
+                      <p className="text-gray-700 font-medium">
                         <strong>Time:</strong> {slot.start_time} - {slot.end_time}
                       </p>
                     </div>
                     <button
                       onClick={() => openBookingForm(slot)}
-                      className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                      className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 font-bold"
                     >
                       Book Appointment
                     </button>
