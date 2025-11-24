@@ -26,9 +26,18 @@ if openai_api_key:
         client = openai
 
 SYSTEM_PROMPT = (
-    "You are a helpful assistant that answers user questions using the provided document context. "
-    "When answering, cite the relevant passages if possible . "
-    "If the answer is not present in the provided context, say you don't know and offer alternative help."
+  """
+You are an intelligent assistant. You MUST use:
+1. The conversation history for follow-up questions.
+2. The retrieved PDF context for factual answers.
+
+Rules:
+- If the user asks a follow-up question, use earlier messages.
+- If the answer is NOT in the document, but is inferable from chat history, answer using chat history.
+- If neither helps, say: "I don't know based on the provided document."
+
+Be short, accurate, and contextual.
+"""
 )
 
 class UploadPDFView(APIView):
@@ -71,14 +80,6 @@ class ChatView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        """
-        JSON:
-        {
-          "session_id": "optional",
-          "doc_id": 1,
-          "question": "..."
-        }
-        """
 
         ser = ChatStartSerializer(data=request.data)
         if not ser.is_valid():
@@ -86,54 +87,52 @@ class ChatView(APIView):
 
         data = ser.validated_data
 
-        # Create or reuse session
         session_id = data.get("session_id") or str(uuid.uuid4())
         session, _ = ChatSession.objects.get_or_create(session_id=session_id)
 
-        question = data["question"]
-        Message.objects.create(session=session, role="user", content=question)
+        user_question = data["question"]
+        Message.objects.create(session=session, role="user", content=user_question)
 
-        # Get the PDF document
+        # ---- LOAD DOCUMENT ----
         try:
             doc = Document.objects.get(id=data["doc_id"])
         except Document.DoesNotExist:
             return Response({"error": "document not found"}, status=404)
 
-        # Retrieve top-k PDF chunks
-        retrieved = retrieve_top_k(doc, question, k=4)
-        retrieved_text = "\n\n---\n\n".join(
-            [f"[chunk_id: {r['chunk_id']}]\n{r['text']}" for r in retrieved]
+        # ---- RAG RETRIEVAL ----
+        retrieved = retrieve_top_k(doc, user_question, k=4)
+        retrieved_text = "\n\n".join([r["text"] for r in retrieved])
+
+        # ---- GET CHAT HISTORY (Not RAG messages) ----
+        history_messages = (
+            session.messages.filter(role__in=["user", "assistant"])
+            .order_by("created_at")
         )
 
-        # Get recent messages for context
-        RECENT_N = 6
-        recent_msgs_qs = session.messages.all().order_by('-created_at')[:RECENT_N]
-        recent_msgs = list(reversed([
-            {"role": m.role, "content": m.content} for m in recent_msgs_qs
-        ]))
-
-        # Build messages for LLM
-        messages = [
-            {"role": "system", "content": SYSTEM_PROMPT}
+        history = [
+            {"role": m.role, "content": m.content}
+            for m in history_messages
         ]
 
-        # Add conversation history
-        for msg in recent_msgs:
-            messages.append({"role": msg["role"], "content": msg["content"]})
+        # ---- FINAL MESSAGE CONSTRUCTION ----
+        messages = []
 
-        # Add PDF context
-        context_block = (
-            "Context retrieved from document:\n\n"
-            f"{retrieved_text}\n\n"
-            "Answer ONLY using this context. If answer is not found, say you don't know."
-        )
-        messages.append({"role": "system", "content": context_block})
+        # SYSTEM
+        messages.append({"role": "system", "content": SYSTEM_PROMPT})
 
-        # Add user question again
-        messages.append({"role": "user", "content": question})
+        # USER + ASSISTANT chat history
+        messages.extend(history)
 
-        # --- GROQ CHAT COMPLETION CALL (working code) ---
-        
+        # RAG context (as SEPARATE SYSTEM message)
+        messages.append({
+            "role": "system",
+            "content": f"Relevant information from the document:\n\n{retrieved_text}"
+        })
+
+        # Current question
+        messages.append({"role": "user", "content": user_question})
+
+        # ---- CALL GROQ ----
         client = OpenAI(
             api_key=os.environ.get("GROQ_API_KEY"),
             base_url="https://api.groq.com/openai/v1"
@@ -143,16 +142,15 @@ class ChatView(APIView):
             resp = client.chat.completions.create(
                 model=os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant"),
                 messages=messages,
-                max_tokens=512,
-                temperature=0.0
+                max_tokens=400,
+                temperature=0.2
             )
-
             answer = resp.choices[0].message.content
 
         except Exception as e:
             return Response({"error": "LLM request failed", "details": str(e)}, status=500)
 
-        # Save assistant reply
+        # Save answer
         Message.objects.create(session=session, role="assistant", content=answer)
 
         return Response({
@@ -160,6 +158,7 @@ class ChatView(APIView):
             "answer": answer,
             "retrieved": retrieved
         })
+
 
 
 # class ChatView(APIView):

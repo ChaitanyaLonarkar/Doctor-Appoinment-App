@@ -14,7 +14,7 @@ const ChatbotWidget = () => {
     const userMsg = { sender: "user", text: input };
     setMessages([...messages, userMsg]);
 
-    const question = { doc_id: 2, question: input };
+    const question = { doc_id: 3, question: input };
     setInput("");
 
     // if (onSendMessage) {
