@@ -14,8 +14,11 @@ import DoctorsList from './pages/DoctorsList';
 import SlotsOfDoctor from './pages/SlotsOfDoctor';
 import PatientAppointments from './pages/PatientAppointments';
 import BookedSlots from './pages/BookedSlots';
+import ChatbotWidget from './components/ChatbotWidget';
 
 function App() {
+
+  
   return (
     <Router>
       <AuthProvider>
@@ -55,7 +58,7 @@ function App() {
               }
             />
           </Routes>
-          
+          <ChatbotWidget/>
         </div>
       </AuthProvider>
     </Router>

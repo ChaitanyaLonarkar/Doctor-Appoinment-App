@@ -27,7 +27,7 @@ if openai_api_key:
 
 SYSTEM_PROMPT = (
     "You are a helpful assistant that answers user questions using the provided document context. "
-    "When answering, cite the relevant passages if possible (e.g., 'From the document: ...'). "
+    "When answering, cite the relevant passages if possible . "
     "If the answer is not present in the provided context, say you don't know and offer alternative help."
 )
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import toast from 'react-hot-toast';
+
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
@@ -68,6 +68,11 @@ export const userAPI = {
   getDoctorsSlots: (id) => api.get(`/appointments/doctor/slots/${id}/`),
   getPatientAppointments: (id) => api.get(`/appointments/patient/appointments/${id}/`),
   getDoctorBookedSlots: (id) => api.get(`/appointments/doctor/booked-slots/${id}/`),
+};
+
+export const chatbotAPI = {
+  sendMessagetoBot: (message) => api.post('/pdf_rag_chat/chat/',message),
+  getChatHistory: () => api.get('/chatbot/chat-history/'),
 };
 
 export default api;
