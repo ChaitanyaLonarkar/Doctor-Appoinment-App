@@ -59,3 +59,27 @@ class AppointmenttSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
         fields = ['id', 'slot', 'patient', 'status']
+
+
+# serializers.py
+from rest_framework import serializers
+from .models import Appointment, Slot, Userr
+
+class DoctorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Userr
+        fields = ['id', 'username', 'email']
+
+class SlotwithDoctorSerializer(serializers.ModelSerializer):
+    doctor = DoctorSerializer()
+
+    class Meta:
+        model = Slot
+        fields = ['id', 'date', 'start_time', 'end_time', 'doctor', 'is_booked']
+
+class AppointmentwithSlotSerializer(serializers.ModelSerializer):
+    slot = SlotwithDoctorSerializer()
+
+    class Meta:
+        model = Appointment
+        fields = ['id', 'slot', 'status']

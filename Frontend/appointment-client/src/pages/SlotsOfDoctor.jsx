@@ -45,7 +45,7 @@ function SlotsOfDoctor() {
       setPatientId('');
       fetchAvailableSlots();
     } catch (error) {
-      console.log(error,"dfgsdfgsdfg");
+      // console.log(error,"dfgsdfgsdfg");
       toast.error(error.response?.data?.msg || 'Failed to book appointment');
     }
   };
@@ -90,9 +90,12 @@ function SlotsOfDoctor() {
                         </h3>
                         <p className="text-sm text-indigo-600 font-medium">Available Slot</p>
                       </div>
-                      <span className="px-4 py-2 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-full text-xs font-bold shadow-lg">
+                      { slot.is_booked ? (<span className="px-4 py-2 bg-gradient-to-r from-red-400 to-red-500 text-white rounded-full text-xs font-bold shadow-lg">
+                        Booked
+                      </span>):(<span className="px-4 py-2 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-full text-xs font-bold shadow-lg">
                         Available
-                      </span>
+                      </span>)}
+                      
                     </div>
                     <div className="space-y-3 mb-6">
                       <p className="text-gray-700 font-medium">
@@ -102,12 +105,22 @@ function SlotsOfDoctor() {
                         <strong>Time:</strong> {slot.start_time} - {slot.end_time}
                       </p>
                     </div>
-                    <button
+                    {slot.is_booked ? (
+                      <button
+                      onClick={() => openBookingForm(slot)}
+                      className="w-full bg-gradient-to-r from-red-600 to-orange-600 text-white py-3 rounded-xl hover:from-red-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 font-bold"
+                      disabled={slot.is_booked}
+                    >
+                      Booked
+                    </button>
+                    ):(<button
                       onClick={() => openBookingForm(slot)}
                       className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 font-bold"
+                      disabled={slot.is_booked}
                     >
                       Book Appointment
-                    </button>
+                    </button>)}
+                    
                   </div>
                 ))}
                 </div>

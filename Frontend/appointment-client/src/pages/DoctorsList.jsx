@@ -26,7 +26,7 @@ function DoctorsList() {
 
   return (
     <>
-      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 min-h-screen">
+      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 ">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-12">
             Available Doctors

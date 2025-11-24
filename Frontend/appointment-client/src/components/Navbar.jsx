@@ -42,7 +42,7 @@ const Navbar = () => {
                     </Link>
 
                     <Link
-                      to="/my-booked-slots"
+                      to="/doctor-appointments"
                       className="hover:text-blue-200 transition-all duration-300 hover:scale-110 font-medium"
                     >
                       My Booked Slots

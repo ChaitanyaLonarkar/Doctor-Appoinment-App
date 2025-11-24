@@ -1,53 +1,96 @@
-import React from 'react'
-import { userAPI } from '../services/api';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { appointmentAPI, userAPI } from "../services/api";
 
-function PatientAppointments() {
-    const user=JSON.parse( localStorage.getItem('user') );
-    const id=user.id
-    const [appointments, setAppointments] = React.useState([]);
+const PatientAppointments = () => {
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    const fetchPatientAppointments = async () => {
-    
-        const response = await userAPI.getPatientAppointments(id)
-        console.log(response.data);
-        setAppointments(response.data)
+  // Fetch patient's appointments
+  const fetchAppointments = async () => {
+    try {
+      const res = await userAPI.getPatientAppointments();
+      console.log(res.data.appointments, "patient appointments");
+      setAppointments(res.data.appointments);
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
     }
+    setLoading(false);
+  };
 
-    React.useEffect(() => {
-        fetchPatientAppointments();
-    }, [])
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
 
+  // Delete (cancel) an appointment
+  const deleteAppointment = async (id) => {
+    if (!window.confirm("Are you sure you want to cancel this appointment?")) return;
+
+    try {
+      await appointmentAPI.deleteAppointment(id);
+
+      // Refresh appointment list
+      fetchAppointments();
+    } catch (error) {
+      console.error("Error deleting appointment:", error);
+    }
+  };
+
+  if (loading) return <p className="text-center mt-6">Loading...</p>;
 
   return (
-      <>
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-12">
-            Your Appointments
-        </h1>
-        {appointments.length === 0 ? (
-            <p className="text-gray-600 text-lg">No appointments scheduled.</p>
-        ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {appointments.map((appointment) => (
-                <div
-                key={appointment.id}
-                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border-2 border-indigo-100"
-                >
-                <div className="text-5xl mb-6">📅</div>
-                <h3 className="text-2xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Appointment ID: {appointment.id}</h3>
-                <p className="text-gray-600 mb-3 font-medium">Doctor ID: {appointment.doctor}</p>
-                <p className="text-gray-600 mb-3 font-medium">Slot ID: {appointment.slot}</p>
-                <p className="text-gray-600 font-medium">Status: <span className="text-indigo-600 font-bold">{appointment.status}</span></p>
-                </div>
+    <div className="container mx-auto p-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen"> 
+    <div className="p-6">
+      <h1 className="text-3xl font-semibold mb-6 text-center">
+        My Appointments
+      </h1>
+
+      <div className="overflow-x-auto shadow-lg rounded-lg">
+        <table className="w-full table-auto bg-white">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-4 py-3 text-left">Doctor Name</th>
+              <th className="px-4 py-3 text-left">Date</th>
+              <th className="px-4 py-3 text-left">Time</th>
+              <th className="px-4 py-3 text-left">Status</th>
+              <th className="px-4 py-3 text-left">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {appointments.map((appt) => (
+              <tr key={appt.id} className="border-b hover:bg-gray-50">
+                <td className="px-4 py-3">
+                  Dr. {appt.slot.doctor.username}
+                </td>
+                <td className="px-4 py-3">{appt.slot.date}</td>
+                <td className="px-4 py-3">
+                  {appt.slot.start_time} – {appt.slot.end_time}
+                </td>
+                <td className="px-4 py-3 font-semibold">
+                  {appt.status === "Booked" ? (
+                    <span className="text-blue-600">Booked</span>
+                  ) : (
+                    <span className="text-green-600">Visited</span>
+                  )}
+                </td>
+
+                <td className="px-4 py-3">
+                  <button
+                    onClick={() => deleteAppointment(appt.id)}
+                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
             ))}
-            </div>
-        )}
-        </div>
+          </tbody>
+        </table>
+      </div>
     </div>
+    </div>
+  );
+};
 
-    </>
-  )
-}
-
-export default PatientAppointments
+export default PatientAppointments;

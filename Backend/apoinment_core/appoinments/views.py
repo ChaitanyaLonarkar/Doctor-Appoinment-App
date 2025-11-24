@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from .models import Userr
 
 from .models import Appointment, Slot
-from .serializers import AppointmentSerializer, GetAllDoctorListSerializer, SlotSerializer
+from .serializers import AppointmentSerializer, AppointmentwithSlotSerializer, GetAllDoctorListSerializer, SlotSerializer
 
 
 class AppointmentView(APIView):
@@ -228,3 +228,32 @@ class UpdateAppointmentStatusView(APIView):
         appointment.save()
 
         return Response({"message": "Status updated successfully"})
+
+
+# views.py
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+from .models import Appointment
+from .serializers import AppointmentSerializer
+from .permissions import IsPatient
+
+class PatientAppointmentsView(APIView):
+    permission_classes = [IsAuthenticated, IsPatient]
+
+    def get(self, request):
+        patient = request.user
+
+        # All appointments booked by this patient
+        appointments = Appointment.objects.filter(
+            patient=patient
+        ).select_related("slot", "slot__doctor")
+
+        serializer = AppointmentwithSlotSerializer(appointments, many=True)
+
+        return Response({
+            "patient": patient.username,
+            "appointments_count": appointments.count(),
+            "appointments": serializer.data
+        })

@@ -54,7 +54,7 @@ const Appointments = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4">
+    <div className=" bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-12">Available Appointments</h1>
 
@@ -144,12 +144,14 @@ const Appointments = () => {
                         <strong>Time:</strong> {slot.start_time} - {slot.end_time}
                       </p>
                     </div>
-                    <button
+
+                    {userinfo.role !=='Admin' && (<button
                       onClick={() => openBookingForm(slot)}
                       className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 font-bold"
                     >
                       Book Appointment
-                    </button>
+                    </button>)}
+                    
                   </div>
                 ))
             )}

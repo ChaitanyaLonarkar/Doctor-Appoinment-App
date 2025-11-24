@@ -23,7 +23,9 @@ urlpatterns = [
     path('doctors/', GetAllDoctorListView.as_view(), name='doctors-list'),
     path('doctor/slots/<int:id>/', GetDoctorSlotsView.as_view(), name='doctor-slots'),
 
-    path('patient/appointments/<int:id>/', GetAppointmentsByPatientView.as_view(), name='patient-appointments'),
+    path('patient/appointments/<int:id>/', GetAppointmentsByPatientView.as_view(), name='patient-appointments-by-id'),
+    path('patient/appointments/', PatientAppointmentsView.as_view(), name='patient-appointments'),
+
 
     path('doctor/booked-slots/<int:id>/', GetDoctorBookedSlotsView.as_view(), name='doctor-booked-slots'),
 
