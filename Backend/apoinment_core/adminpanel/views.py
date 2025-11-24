@@ -9,9 +9,9 @@ from rest_framework import status, permissions
 
 from appoinments.models import Appointment
 from .serializers import AdminAppointmentSerializer
-
+from rest_framework.permissions import AllowAny,IsAuthenticated
 class AdminAppointmentListView(APIView):
-    permission_classes = [permissions.IsAdminUser]   # Only admin can access
+    permission_classes = [AllowAny,IsAuthenticated]   # Only admin can access
 
     def get(self, request):
         appointments = Appointment.objects.select_related("slot", "patient", "slot__doctor").all().order_by("slot__date", "slot__start_time")

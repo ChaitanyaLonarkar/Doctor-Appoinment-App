@@ -116,7 +116,7 @@ class GetAllSlotsView(APIView):
 # used
 # New endpoint: Get slots for a specific doctor
 class GetDoctorSlotsView(APIView):
-    permission_classes = [IsPatient,IsAuthenticated]
+    permission_classes = [AllowAny,IsAuthenticated]
     def get(self, request, id):
         slots = Slot.objects.filter(doctor=id)
         serializer = SlotSerializer(slots, many=True)
@@ -186,7 +186,7 @@ class GetAppointmentsByPatientView(APIView):
 # used
 # get all doctor list view
 class GetAllDoctorListView(APIView):
-    permission_classes = [IsPatient, IsAuthenticated]
+    permission_classes = [AllowAny, IsAuthenticated]
     def get(self, request):
         doctors = Userr.objects.filter(role='doctor')
         serializer = GetAllDoctorListSerializer(doctors, many=True)

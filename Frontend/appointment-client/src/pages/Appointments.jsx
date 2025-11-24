@@ -20,7 +20,7 @@ const Appointments = () => {
     try {
       setLoading(true);
       const response = await slotAPI.getAllSlots();
-      // console.log(response.data,"slots data");
+      console.log(response.data,"slots data");
       setSlots(response.data);
     } catch (error) {
       toast.error('Failed to fetch slots');
@@ -119,7 +119,7 @@ const Appointments = () => {
               </div>
             ) : (
               slots
-                .filter((slot) => !slot.is_booked)
+                
                 .map((slot) => (
                   <div
                     key={slot.id}
@@ -132,9 +132,12 @@ const Appointments = () => {
                         </h3>
                         <p className="text-sm text-indigo-600 font-medium">Available Slot</p>
                       </div>
-                      <span className="px-4 py-2 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-full text-xs font-bold shadow-lg">
+                      {slot.is_booked ? ( <span className="px-4 py-2 bg-gradient-to-r from-red-400 to-red-500 text-white rounded-full text-xs font-bold shadow-lg">
+                        Booked
+                      </span>) : ( <span className="px-4 py-2 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-full text-xs font-bold shadow-lg">
                         Available
-                      </span>
+                      </span>)}
+                     
                     </div>
                     <div className="space-y-3 mb-6">
                       <p className="text-gray-700 font-medium">
